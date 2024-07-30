@@ -5,6 +5,7 @@
 package com.agl.metrics.service;
 
 import com.agl.metrics.repository.IssueRepository;
+import com.agl.metrics.repository.IssueIterationReportRepository;
 import com.agl.metrics.dto.IssueDTO;
 import com.agl.metrics.dto.IssueIterationReportDTO;
 import com.agl.metrics.entity.Issue;
