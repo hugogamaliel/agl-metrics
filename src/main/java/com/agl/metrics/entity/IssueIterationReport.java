@@ -31,7 +31,7 @@ public class IssueIterationReport implements Serializable {
     @Column(name = "POINTS")
     private Long points;
     
-    @Column(name = "ITERATION_NUMBER")
+    @Column(name = "ITERATION")
     private Long iterationNumber;
     
     public Long getIdIssue() {
