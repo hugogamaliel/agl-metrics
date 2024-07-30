@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.agl.metrics.service.IssueService;
 import com.agl.metrics.dto.IssueDTO;
+import com.agl.metrics.dto.IssueIterationReportDTO;
+import com.agl.metrics.entity.IssueIterationReport;
 
 /**
  *
@@ -86,6 +88,34 @@ public class IssueController {
         } catch (DataAccessException e) {
             LOGGER.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+        
+    }
+    
+    @Operation(summary = "Get Issue Iteration Report")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Retrieve list of Issues per Iteration",
+                content = {
+                    @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = IssueIterationReport.class))})})
+    @GetMapping(value = "/iteration-report-dto/{iterationNumber}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getIterationReport(@Parameter(description = "Iteration number") 
+    @PathVariable Long iterationNumber) 
+    {
+        LOGGER.info("===== Getting Report =====");
+        
+        List<IssueIterationReportDTO> issueIterationReport = issueService.getIssueIterationReportDTO(iterationNumber);
+        
+        try{
+            /*
+            Map<String, Object> response = new HashMap<>();
+            response.put("response", issueIterationReport);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+            */
+            return ResponseEntity.status(HttpStatus.OK).body(issueIterationReport);
+        } catch(Exception e) {
+            LOGGER.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         
     }
