@@ -17,7 +17,7 @@ import org.springframework.data.repository.query.Param;
  *
  * @author hugo.reyes
  */
-public interface IssueRepository {
+public interface IssueRepository extends JpaRepository<Issue, Long> {
     
     @Query("SELECT c FROM Issue c WHERE c.jiraCard = :jiraCardNumber")
     Optional<Issue> findByJiraCardNumber(@Param("jiraCardNumber") String jiraCardNumber);

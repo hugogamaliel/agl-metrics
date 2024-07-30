@@ -5,11 +5,17 @@
 package com.agl.metrics.service;
 
 import com.agl.metrics.repository.IssueRepository;
+import com.agl.metrics.repository.IssueIterationReportRepository;
 import com.agl.metrics.dto.IssueDTO;
+import com.agl.metrics.dto.IssueIterationReportDTO;
 import com.agl.metrics.entity.Issue;
+import com.agl.metrics.entity.IssueIterationReport;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -30,6 +36,9 @@ public class IssueService {
     
     @Autowired
     private IssueRepository issueRepository;
+    
+    @Autowired
+    private IssueIterationReportRepository issueIterationReportRepository;
     
     public IssueDTO getIssue(String jiraCardNumber) {
         LOGGER.info("{} Getting issue by Jira Card number {}... ", MESSAGE, jiraCardNumber);
@@ -71,5 +80,48 @@ public class IssueService {
             return new ArrayList<>();
         }
 
+    }
+    
+    public List<IssueIterationReportDTO> getIssueIterationReportDTO(Long iterationNumber)
+    {
+        LOGGER.info("{} Iteration Report DTO {}... ", MESSAGE,"");
+        
+        List<IssueIterationReport> issueIterationReport = issueIterationReportRepository.getIssueIterationReport(iterationNumber);
+        List<IssueIterationReportDTO> issueIRDTO = new ArrayList<IssueIterationReportDTO>();
+        
+        issueIterationReport.stream()
+                .forEach(issueIREntity -> {
+                    var myIssueIRDTO = new IssueIterationReportDTO();
+
+                    myIssueIRDTO.setName(issueIREntity.getName());
+                    myIssueIRDTO.setPoints(issueIREntity.getPoints());
+                    myIssueIRDTO.setIterationNumber(issueIREntity.getIterationNumber());
+
+                    issueIRDTO.add(myIssueIRDTO);
+        });
+        //Group by Person
+        Map<String, Long> totalIssuesByPerson = issueIRDTO.stream()
+                .collect(Collectors.groupingBy(IssueIterationReportDTO::getName,
+                        Collectors.summingLong(IssueIterationReportDTO::getPoints)));
+        
+        issueIRDTO.clear();
+        
+        totalIssuesByPerson.forEach((personName, personPoints) -> {
+            var myIssueIRDTO = new IssueIterationReportDTO();
+            myIssueIRDTO.setName(personName);
+            myIssueIRDTO.setPoints(personPoints);
+            myIssueIRDTO.setIterationNumber(iterationNumber);
+            
+            issueIRDTO.add(myIssueIRDTO);
+        });
+        
+        try {
+            return issueIRDTO;
+        }
+        catch(DataAccessException e)
+        {
+            LOGGER.error("===== There was an error getting data DTO =====");
+            return new ArrayList<>();
+        }       
     }
 }

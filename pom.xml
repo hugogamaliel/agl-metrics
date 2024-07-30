@@ -110,7 +110,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.agl.metrics</mainClass>
+                    <mainClass>com.agl.metrics.AglMetrics</mainClass>
                 </configuration>
             </plugin>
             
