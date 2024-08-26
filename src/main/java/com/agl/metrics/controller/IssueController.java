@@ -43,7 +43,7 @@ public class IssueController {
     @Autowired
     private IssueService issueService;
     
-    
+    /*
     @Operation(summary = "Get Issue overview")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Retrieve Issue overview data",
@@ -70,7 +70,9 @@ public class IssueController {
         } 
     
     }
-    
+    Commented on 2024-08-26
+    This code call a services that uses setters in DTO, which are not included anymore
+    */ 
     @Operation(summary = "Get report of Points by Team Member for a given iteration")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Retrieve list of Issues per Iteration",

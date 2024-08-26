@@ -27,8 +27,35 @@ public class IssueDTO {
     private Boolean isBJ;
     private Boolean isPull;
     private Long iteration;
-    private String Description;
+    private String description;
+    
+    public IssueDTO(
+            Long idIssue, 
+            IssueType issueType,
+            Project project,
+            Status status,
+            Priority priority,
+            String jiraCardNumber,
+            Long points,
+            Boolean isBJ,
+            Boolean isPull,
+            Long iteration,
+            String description
+    ){
+        this.idIssue = idIssue;
+        this.issueType = issueType;
+        this.project = project;
+        this.status = status;
+        this.priority = priority;
+        this.jiraCardNumber = jiraCardNumber;
+        this.points = points;
+        this.isBJ = isBJ;
+        this.isPull = isPull;
+        this.iteration = iteration;
+        this.description = description;
+    }
 
+    /*
     public void setIdIssue(Long idIssue) {
         this.idIssue = idIssue;
     }
@@ -76,10 +103,10 @@ public class IssueDTO {
     public void setDescription(String Description) {
         this.Description = Description;
     }
-    
+    */
     
     public String getDescription() {
-        return Description;
+        return description;
     }
     
     public Long getIdIssue() {

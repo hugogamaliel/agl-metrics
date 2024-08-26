@@ -25,7 +25,15 @@ public class IssueIterationReportDTO {
     public Long getIterationNumber() {
         return iterationNumber;
     }
-
+    
+    public IssueIterationReportDTO(String name, Long points, Long iterationNumber)
+    {
+        this.name = name;
+        this.points = points;
+        this.iterationNumber = iterationNumber;
+    }
+    
+    /*
     public void setName(String name) {
         this.name = name;
     }
@@ -37,4 +45,5 @@ public class IssueIterationReportDTO {
     public void setIterationNumber(Long iterationNumber) {
         this.iterationNumber = iterationNumber;
     }
+    */
 }
