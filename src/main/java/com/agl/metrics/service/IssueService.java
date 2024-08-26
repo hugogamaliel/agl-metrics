@@ -40,6 +40,7 @@ public class IssueService {
     @Autowired
     private IssueIterationReportRepository issueIterationReportRepository;
     
+    /*
     public IssueDTO getIssue(String jiraCardNumber) {
         LOGGER.info("{} Getting issue by Jira Card number {}... ", MESSAGE, jiraCardNumber);
         Optional<Issue> issueOpt = issueRepository.findByJiraCardNumber(StringUtils.stripToEmpty(jiraCardNumber));
@@ -47,7 +48,7 @@ public class IssueService {
             throw new EntityNotFoundException("Issue reference number " + jiraCardNumber);
             
         }
-        
+         
         IssueDTO issue = new IssueDTO();
         
         Issue issueEntity = issueOpt.get();
@@ -66,6 +67,9 @@ public class IssueService {
         
         return issue;
     }
+    Commented on 2024-08-26
+    This code uses setters in DTO, which are not included anymore
+    */
     
     public List<Object[]> getIssueIterationReport(Long iterationNumber){
   
@@ -91,11 +95,16 @@ public class IssueService {
         
         issueIterationReport.stream()
                 .forEach(issueIREntity -> {
-                    var myIssueIRDTO = new IssueIterationReportDTO();
-
+                    var myIssueIRDTO = new IssueIterationReportDTO(
+                            issueIREntity.getName(),
+                            issueIREntity.getPoints(),
+                            issueIREntity.getIterationNumber());
+                    
+                    /*
                     myIssueIRDTO.setName(issueIREntity.getName());
                     myIssueIRDTO.setPoints(issueIREntity.getPoints());
                     myIssueIRDTO.setIterationNumber(issueIREntity.getIterationNumber());
+                    */
 
                     issueIRDTO.add(myIssueIRDTO);
         });
@@ -107,10 +116,15 @@ public class IssueService {
         issueIRDTO.clear();
         
         totalIssuesByPerson.forEach((personName, personPoints) -> {
-            var myIssueIRDTO = new IssueIterationReportDTO();
+            var myIssueIRDTO = new IssueIterationReportDTO(
+                    personName, 
+                    personPoints,
+                    iterationNumber);
+            /*
             myIssueIRDTO.setName(personName);
             myIssueIRDTO.setPoints(personPoints);
             myIssueIRDTO.setIterationNumber(iterationNumber);
+            */
             
             issueIRDTO.add(myIssueIRDTO);
         });
